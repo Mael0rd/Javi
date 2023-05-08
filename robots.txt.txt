@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://javisurflessons.com/sitemap.xml
