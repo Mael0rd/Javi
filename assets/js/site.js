@@ -31,6 +31,34 @@
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
+  // ---------- Menu board: floats in the water and sends out small ripples as it moves ----------
+  const water = document.getElementById("rail-water");
+  if (water && motionOK) {
+    const board = water.querySelector(".rail-brand");
+    // small rings where the board touches the water: one on a random rail, one at the tail
+    const ring = (x, y) => {
+      const r = document.createElement("span");
+      r.className = "rail-ripple";
+      r.style.cssText = "left:" + x + "px;top:" + y + "px;width:22px;height:22px";
+      r.addEventListener("animationend", () => r.remove());
+      water.appendChild(r);
+    };
+    const ripple = () => {
+      const left = board.offsetLeft, top = board.offsetTop, w = board.offsetWidth, h = board.offsetHeight;
+      ring(Math.random() < 0.5 ? left : left + w, top + h * (0.25 + Math.random() * 0.6));
+      ring(left + w / 2, top + h + 4);
+    };
+    board.addEventListener("animationiteration", ripple); // each bob pushes out a ring
+    setTimeout(ripple, 1600); // and one at the bottom of the bob
+    setInterval(() => { if (!document.hidden) ripple(); }, 3200);
+    board.addEventListener("pointerenter", ripple);
+    let lastScroll = 0;
+    window.addEventListener("scroll", () => {
+      const now = performance.now();
+      if (now - lastScroll > 350) { lastScroll = now; ripple(); }
+    }, { passive: true });
+  }
+
   // ---------- Top bar: a small surfer rides a thin wave, following the mouse ----------
   const topwave = document.getElementById("topwave");
   const waveLine = document.getElementById("topwave-line");

@@ -1,7 +1,7 @@
 /* Javi Surf Lessons
    Palette sampled from the hero photo (a surfer walking the shore at sunset, Nosara,
    Costa Rica): dark sand for ink, ember and rust from the sky, the orange of the wet
-   sand, and the sun's gold for booking. Light sections stay plain white. */
+   sand, and the sun's gold for booking. No white sections: the page stays in the sunset. */
 
 :root {
   --salt: #FFFFFF;       /* page background */
@@ -213,7 +213,7 @@ body { padding-right: var(--rail); }
   padding-bottom: 1.25rem;
   overflow-y: auto;
   scrollbar-width: none;
-  background: #1E120B;
+  background: linear-gradient(180deg, #0B403D 0%, #0A3331 35%, #082624 70%, #06181A 100%);
   box-shadow: -1px 0 0 rgba(255, 230, 210, 0.08);
 }
 /* The name sits on a softboard in the same gold as "Jacó": pointed nose up, rounded tail, a fin */
@@ -253,6 +253,55 @@ body { padding-right: var(--rail); }
   white-space: nowrap;
 }
 .rail-brand:hover { color: var(--pacific); background: #FAD46E; transform: translateY(-2px); }
+
+/* The board floats in a patch of sea: it bobs, and site.js drops ripple rings around it */
+.rail-water {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  padding: 0.9rem 0 3rem;
+  margin-bottom: -1.5rem; /* the fade overlaps the gap, so the menu icons do not move */
+  overflow: hidden;
+}
+/* the water lives on its own layer so only it fades into the rail, not the board */
+.rail-water::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 30% at 35% 22%, rgba(255, 240, 200, 0.16), transparent 70%),
+    repeating-linear-gradient(170deg, transparent 0 13px, rgba(200, 255, 245, 0.07) 13px 15px),
+    linear-gradient(180deg, #0E5A55 0%, #0B403D 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
+  mask-image: linear-gradient(180deg, #000 60%, transparent);
+}
+.rail-water .rail-brand {
+  width: 60%;
+  margin-top: 0;
+  z-index: 1;
+  filter: drop-shadow(0 6px 5px rgba(0, 25, 24, 0.45));
+  animation: board-bob 3.2s ease-in-out infinite;
+}
+@keyframes board-bob {
+  0%, 100% { translate: 0 0; rotate: -2deg; }
+  50% { translate: 0 5px; rotate: 2deg; }
+}
+.rail-ripple {
+  position: absolute;
+  z-index: 0;
+  border: 2.5px solid rgba(235, 255, 252, 0.95);
+  box-shadow: 0 0 6px rgba(160, 255, 240, 0.35);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: ripple-out 2.2s ease-out forwards;
+}
+@keyframes ripple-out {
+  from { transform: translate(-50%, -50%) scale(0.3); opacity: 0.95; }
+  to { transform: translate(-50%, -50%) scale(3, 1.9); opacity: 0; }
+}
 .rail-nav { display: flex; flex-direction: column; gap: 1.4rem; margin-top: 0.5rem; }
 .rail-nav a, .rail-place {
   display: grid;
@@ -529,17 +578,18 @@ body { padding-right: var(--rail); }
 
 /* Prices */
 
-/* From the rust at the bottom of "When to come" up into daylight */
+/* From the rust at the bottom of "When to come" down into the dusk */
 .prices {
   padding-top: calc(var(--pad-y) * 1.6);
   background: linear-gradient(to bottom,
     #A54120 0,
-    #D9773F calc(var(--pad-y) * 0.45),
-    #F4C29A calc(var(--pad-y) * 0.95),
-    #FFFFFF calc(var(--pad-y) * 1.45));
+    #8A3A18 calc(var(--pad-y) * 0.6),
+    #5A2C17 calc(var(--pad-y) * 1.3),
+    #3A2014 100%);
+  color: #FFF3E8;
 }
 .prices h2 { margin-bottom: 0.75rem; }
-.prices-note { color: var(--sand); margin-bottom: 2.5rem; }
+.prices-note { color: #EAD6C8; margin-bottom: 2.5rem; }
 
 .price-list { list-style: none; padding: 0; margin: 0 auto 2.5rem; }
 .price-row {
@@ -548,11 +598,11 @@ body { padding-right: var(--rail); }
   justify-content: space-between;
   gap: 1.5rem;
   padding: 1.5rem 0;
-  border-top: 2px solid var(--pacific);
+  border-top: 2px solid rgba(255, 230, 210, 0.3);
 }
-.price-row:last-child { border-bottom: 2px solid var(--pacific); }
+.price-row:last-child { border-bottom: 2px solid rgba(255, 230, 210, 0.3); }
 .price-name h3 { margin-bottom: 0.35rem; }
-.price-name p { margin: 0; color: var(--sand); }
+.price-name p { margin: 0; color: #EAD6C8; }
 
 .price-amount {
   margin: 0;
@@ -561,16 +611,16 @@ body { padding-right: var(--rail); }
   font-stretch: 140%;
   font-size: clamp(3rem, 8vw, 5.5rem);
   line-height: 1;
-  color: var(--burnt);
+  color: var(--softboard);
 }
 .price-amount .cur { font-size: 0.45em; vertical-align: 0.9em; margin-right: 0.08em; }
 
 /* Photos */
 
-.photos { background: linear-gradient(to bottom, #FFFFFF 0, var(--foam) var(--pad-y)); }
+.photos { color: #FFF3E8; background: linear-gradient(to bottom, #3A2014 0, #2E1A10 100%); }
 .photos-head { margin-bottom: 2.5rem; }
 .photos-head h2 { margin-bottom: 0.75rem; }
-.photos-head p { color: var(--sand); }
+.photos-head p { color: #EAD6C8; }
 
 /* The sea: photos drift across on layered waves. Without JS (or with reduced motion)
    it is a plain strip you scroll by hand. */
@@ -685,22 +735,23 @@ body { padding-right: var(--rail); }
 
 /* FAQ */
 
-/* Out of the dark sea at the bottom of the photos, back to the shore light */
+/* Out of the dark sea at the bottom of the photos, staying in the dusk */
 .faq {
   padding-top: calc(var(--pad-y) * 1.6);
   background: linear-gradient(to bottom,
     #2A1810 0,
-    #6E3E26 calc(var(--pad-y) * 0.45),
-    #E9C29E calc(var(--pad-y) * 1),
-    #FFF8F2 calc(var(--pad-y) * 1.45),
-    #FFFFFF 100%);
+    #3A2014 50%,
+    #2A1810 100%);
+  color: #FFF3E8;
 }
+.faq a { color: var(--softboard); }
+.faq a:hover { color: #FAD46E; }
 .faq h2 { margin-bottom: 2rem; }
 .faq-list { max-width: 48rem; margin-inline: 0; }
 .faq-list { margin-left: max(0px, calc((100% - 72rem) / 2)); }
 
-details { border-top: 1px solid var(--line); }
-details:last-child { border-bottom: 1px solid var(--line); }
+details { border-top: 1px solid rgba(255, 230, 210, 0.2); }
+details:last-child { border-bottom: 1px solid rgba(255, 230, 210, 0.2); }
 
 summary {
   display: flex;
@@ -722,8 +773,8 @@ summary::after {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: var(--pacific);
-  color: var(--foam);
+  background: #FFF3E8;
+  color: var(--pacific);
   font-family: var(--body);
   font-weight: 700;
   font-size: 1.4rem;
@@ -731,16 +782,16 @@ summary::after {
   transition: transform 0.2s;
 }
 details[open] summary::after { transform: rotate(45deg); background: var(--softboard); color: var(--pacific); }
-details p { padding-bottom: 1.25rem; color: var(--sand); }
+details p { padding-bottom: 1.25rem; color: #EAD6C8; }
 
 /* Contact: the last of the sunset, just before the sand */
 
-/* Rises out of the white above and settles into sand colour before the dune of the footer */
+/* Rises out of the dark FAQ above and settles into sand colour before the dune of the footer */
 .contact {
   padding-top: calc(var(--pad-y) * 1.4);
   padding-bottom: calc(var(--pad-y) * 1.4);
   background:
-    linear-gradient(to bottom, #FFFFFF 0, rgba(255, 255, 255, 0) calc(var(--pad-y) * 1.2)),
+    linear-gradient(to bottom, #2A1810 0, rgba(42, 24, 16, 0) calc(var(--pad-y) * 1.2)),
     linear-gradient(to top, #E8C48E 0, rgba(232, 196, 142, 0) calc(var(--pad-y) * 1.2)),
     linear-gradient(160deg, #F9B451 0%, var(--orange) 55%, #E06A24 100%);
 }
@@ -796,7 +847,19 @@ details p { padding-bottom: 1.25rem; color: var(--sand); }
   font-stretch: 130%;
   font-size: 1.25rem;
 }
-.footer-small { margin-top: 1.5rem !important; font-size: var(--step--1); }
+/* white alone washes out on the sand, so the credit sits on a dark pill */
+.footer-small {
+  display: inline-block;
+  margin-top: 1.5rem !important;
+  padding: 0.6rem 1.1rem;
+  border-radius: 1.1rem; /* still reads as a pill on one line, and stays tidy when it wraps on phones */
+  background: rgba(42, 24, 16, 0.88);
+  color: #FFFFFF;
+  font-size: var(--step--1);
+  font-weight: 600;
+}
+.footer-small a { color: var(--softboard); font-weight: 800; text-decoration-thickness: 2px; }
+.footer-small a:hover { color: #FFFFFF; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
