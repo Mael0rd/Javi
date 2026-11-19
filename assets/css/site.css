@@ -263,6 +263,7 @@ body { padding-right: var(--rail); }
   justify-items: center;
   padding: 0.9rem 0 3rem;
   margin-bottom: -1.5rem; /* the fade overlaps the gap, so the menu icons do not move */
+  flex-shrink: 0; /* on short screens the rail scrolls instead of squeezing (and clipping) the board */
   overflow: hidden;
 }
 /* the water lives on its own layer so only it fades into the rail, not the board */
@@ -905,4 +906,21 @@ details p { padding-bottom: 1.25rem; color: #EAD6C8; }
   .rail-wa { font-size: 0.69rem; letter-spacing: 0; }
   .rail-wa-dot { width: 40px; height: 40px; }
   .rail-wa .rail-wa-dot svg { width: 24px; height: 24px; }
+}
+/* Short screens (phones with the browser bar, laptops): tighten the rail so the whole menu fits */
+@media (max-height: 860px) {
+  .rail { gap: 0.8rem; padding-bottom: 0.8rem; }
+  .rail-water { padding-bottom: 2.2rem; }
+  .rail-brand { padding-block: 1.7rem 1.4rem; }
+  .rail-nav { gap: 1rem; }
+}
+@media (max-height: 720px) {
+  .rail-brand { padding-block: 1.2rem 1rem; }
+  .rail-nav { gap: 0.6rem; }
+}
+@media (max-height: 720px) and (min-width: 641px) {
+  .rail-brand span { font-size: 1.1rem; }
+}
+@media (max-height: 580px) {
+  .rail-place { display: none; } /* very short screens: the location label gives way so WhatsApp stays visible */
 }

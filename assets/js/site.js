@@ -98,8 +98,31 @@
         lastMouse = performance.now();
       }, { passive: true });
 
+      // phones: tilt left/right and the surfer rides that way (gamma is the side tilt in portrait)
+      const TILT = 25; // degrees of tilt that reach the edge
+      const onTilt = (e) => {
+        const angle = (screen.orientation && screen.orientation.angle) || 0;
+        const tilt = angle === 90 ? e.beta : angle === 270 || angle === -90 ? -e.beta : e.gamma;
+        if (tilt == null) return;
+        const k = Math.min(Math.max(tilt / TILT, -1), 1);
+        target = 20 + (width - 40) * (0.5 + k / 2);
+        lastMouse = performance.now();
+      };
+      if (window.DeviceOrientationEvent && matchMedia("(pointer: coarse)").matches) {
+        if (typeof DeviceOrientationEvent.requestPermission === "function") {
+          // iPhone only shares tilt after a tap, so ask on the first touch
+          window.addEventListener("touchend", () => {
+            DeviceOrientationEvent.requestPermission()
+              .then((s) => { if (s === "granted") window.addEventListener("deviceorientation", onTilt); })
+              .catch(() => {});
+          }, { once: true });
+        } else {
+          window.addEventListener("deviceorientation", onTilt);
+        }
+      }
+
       const ride = (t) => {
-        // with no mouse (phones) or a resting mouse, ride back and forth alone
+        // with no mouse or tilt, or when they rest, ride back and forth alone
         if (t - lastMouse > 2500) target = width * (0.5 + 0.42 * Math.sin(t / 3200));
         const step = (target - x) * 0.07;
         if (Math.abs(step) > 0.05) body.classList.toggle("is-left", step < 0);
