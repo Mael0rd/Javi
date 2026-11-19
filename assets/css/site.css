@@ -315,7 +315,33 @@ body { padding-right: var(--rail); }
 }
 .rail-nav a:hover { color: var(--teal); }
 .rail svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.rail-place { margin: auto 0 0; font-weight: 600; }
+.rail-place { margin: 0; font-weight: 600; }
+/* WhatsApp: the one button in the rail, in WhatsApp green so it reads as "message us" */
+.rail-wa {
+  margin-top: auto;
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  color: #F3E6DC;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+.rail-wa-dot {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #25D366;
+  box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.18), 0 6px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.rail-wa .rail-wa-dot svg { width: 28px; height: 28px; color: #fff; stroke-width: 1.8; }
+.rail-wa .fill { fill: currentColor; stroke: none; }
+.rail-wa:hover .rail-wa-dot, .rail-wa:focus-visible .rail-wa-dot { transform: translateY(-2px) scale(1.06); box-shadow: 0 0 0 6px rgba(37, 211, 102, 0.25), 0 8px 18px rgba(0, 0, 0, 0.4); }
+.rail-wa:hover { color: #25D366; }
 .rail-place svg { width: 20px; height: 20px; color: var(--teal); }
 
 /* Frame */
@@ -876,4 +902,7 @@ details p { padding-bottom: 1.25rem; color: #EAD6C8; }
   .rail svg { width: 22px; height: 22px; }
   .rail-nav a, .rail-place { font-size: 0.69rem; letter-spacing: 0; } /* 11px floor */
   .rail-place svg { width: 18px; height: 18px; }
+  .rail-wa { font-size: 0.69rem; letter-spacing: 0; }
+  .rail-wa-dot { width: 40px; height: 40px; }
+  .rail-wa .rail-wa-dot svg { width: 24px; height: 24px; }
 }
