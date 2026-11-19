@@ -209,6 +209,21 @@
     frame.addEventListener("focusout", (e) => { if (!frame.contains(e.relatedTarget)) pause(false); });
     document.addEventListener("visibilitychange", () => (document.hidden ? clearTimeout(timer) : schedule()));
 
+    // the spec card keeps the height of its longest text, so changing slides never pushes the hero around
+    const fitSpec = () => {
+      spec.style.minHeight = "";
+      let tallest = 0;
+      slides.forEach((s) => {
+        fields.forEach(([k, el]) => { el.textContent = s.dataset[k]; });
+        tallest = Math.max(tallest, spec.offsetHeight);
+      });
+      fields.forEach(([k, el]) => { el.textContent = slides[current].dataset[k]; });
+      spec.style.minHeight = tallest + "px";
+    };
+    fitSpec();
+    window.addEventListener("resize", fitSpec, { passive: true });
+    if (document.fonts) document.fonts.ready.then(fitSpec);
+
     spec.setAttribute("aria-live", "off");
     show(0);
   }
